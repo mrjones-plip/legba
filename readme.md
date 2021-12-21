@@ -7,3 +7,22 @@ basis. These same parents need to also enjoy setting up random Python projects ;
 Assumes that each device has been statically assigned an IP by your DHCP server.
 
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
+
+## Prerequisites
+
+* python
+* web accessible directory to view output - defaults to `/var/www/html/index.html`
+
+## Install
+
+2. Clone this repo, `cd` into it
+3. copy `conf.dist.py` to `conf.py`
+4. add your devices to `conf.py`
+5. set your output path
+6. Run `python main.py`...forever
+
+## Todo
+
+- [ ] Add hourly breakdown, first and last time online
+- [ ] Pretty up the output, maybe AJAX or autorefresh or both?
+- [ ] Add better running instructions - daemonize this!
