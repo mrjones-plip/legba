@@ -1,6 +1,6 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import subprocess, sqlite3, time, conf
+import subprocess, sqlite3, time, conf, pandas
 from datetime import datetime
 from sqlite3 import Error
 
@@ -82,6 +82,28 @@ def get_days_activity(sqlite, date):
     return cur.fetchall()
 
 
+def get_first_and_last(sqlite, date, person):
+    """
+    record a new activity
+    :param sqlite:
+    :param date:
+    :param person:
+    :return rows:
+    """
+
+    sql = ''' select time(min(date)) as earliest, time(max(date)) as latest 
+        from status 
+        where state=1 and date like ? and name = ? '''
+    cur = sqlite.cursor()
+    # todo - maybe cleanse/validate the date var? could lead to more data getting selected than a single date
+    cur.execute(sql, [date + "%", person])
+    result = cur.fetchone()
+    return {
+        'first': datetime.strptime(result[0], "%H:%M:%S").strftime("%-I:%M %p"),
+        'last':  datetime.strptime(result[1], "%H:%M:%S").strftime("%-I:%M %p")
+    }
+
+
 def is_online(ips):
     for ip in ips:
         if ping(ip):
@@ -93,15 +115,21 @@ def output_stats_html(sqlite, date):
     # select name,strftime('%m-%d-%Y %H', date) as thedate,sum(state) as summed from status where state=1 group by name,thedate order by name,thedate;
     # select name, sum(state) as summed from status where state=1 and date like '2021-12-20%' group by name;
     counts_by_day = get_days_activity(sqlite, date)
-    html_data = open("header.html", "r").read()
-    html_data += "<h2>Activity for " + str(date) + "</h2>"
-    html_data += "<p>Last Updated: " + datetime.now().strftime("%I:%M %p") + "<p>"
+    tableHead = ["Name","Total","First","Last"]
+    tableData = []
     for row in counts_by_day:
         person = row[0]
         total_minutes = row[1]
+        first_last = get_first_and_last(sqlite, date, person)
         # one liner FTW! thanks https://stackoverflow.com/a/65422487
-        total_formatted = " {}h {}m ".format(*divmod(total_minutes, 60))
-        html_data += total_formatted + person + "</br>"
+        total_formatted = "{}h {}m ".format(*divmod(total_minutes, 60))
+        tableData += [[person, total_formatted, first_last['first'], first_last['last']]]
+
+    table = pandas.DataFrame(tableData, columns=tableHead)
+    html_data = open("header.html", "r").read()
+    html_data += "<h2>Activity for " + str(date) + "</h2>"
+    html_data += "<p>Last Updated: " + datetime.now().strftime("%-I:%M %p") + "<p>"
+    html_data += table.to_html()
 
     # todo - gracefully handle when this file can't be written to
     file = open(conf.html_file, "w")
@@ -113,6 +141,7 @@ def main():
     sqlite = create_connection(r"./net-tracker.db")
     print('net-tracker started')
 
+    output_stats_html(sqlite, datetime.now().strftime("%Y-%m-%d"))
     while 1 == 1:
         count = 0
         online = 0
@@ -124,7 +153,6 @@ def main():
             if result:
                 online += 1
 
-        output_stats_html(sqlite, datetime.now().strftime("%Y-%m-%d"))
         print("net-tracker " + str(online) + " of " + str(count) + " people online")
         time.sleep(60)
 

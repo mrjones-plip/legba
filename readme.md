@@ -23,6 +23,8 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
 ## Todo
 
+- [x] Add github link to output
+- [x] Make it a bit more responsive on mobile
 - [ ] Add hourly breakdown, first and last time online
 - [ ] Pretty up the output, maybe AJAX or autorefresh or both?
 - [ ] Add better running instructions - daemonize this!
