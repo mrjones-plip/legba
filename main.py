@@ -139,7 +139,7 @@ def output_stats_html(sqlite, date):
 
 def main():
     sqlite = create_connection(r"./net-tracker.db")
-    print('net-tracker started')
+    print('Legba started')
 
     while 1 == 1:
         count = 0
@@ -153,7 +153,7 @@ def main():
                 online += 1
 
         output_stats_html(sqlite, datetime.now().strftime("%Y-%m-%d"))
-        print("net-tracker " + str(online) + " of " + str(count) + " people online")
+        print("Legba " + str(online) + " of " + str(count) + " people online")
         time.sleep(60)
 
 
