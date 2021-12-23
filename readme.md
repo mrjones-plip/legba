@@ -26,8 +26,8 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
     ```    
     sudo cp legba.service /etc/systemd/system/
     sudo systemctl daemon-reload
-    sudo systemctl enable cattmate
-    sudo systemctl start cattmate
+    sudo systemctl enable legba
+    sudo systemctl start legba
     ```
 
 ## Todo
