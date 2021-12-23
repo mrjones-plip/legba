@@ -19,7 +19,7 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
 3. Copy `conf.dist.py` to `conf.py`
 4. Add your devices to `conf.py` in the `trackme` variable.
-5. Set your output path in `conf.py` in the `html_file` variable
+5. Set your output path in `conf.py` in the `html_file` variable. Ensure the `legba` user can write to this file.
 6. Install all the python prerequisites with `pip3 install -r requirements.txt`
 7. Copy the systemd file into place, reload systemd, start and enable it:
 

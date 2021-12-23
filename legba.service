@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=pi
+User=legba
 WorkingDirectory=/home/legba/legba
 ExecStart=/usr/bin/python3 -u /home/legba/legba/main.py
 Restart=always
