@@ -4,7 +4,7 @@ Track how long devices have been online on your LAN. Ideal for parents who want 
 and open dialog with their kids about how long they should be online on a day to day
 basis. These same parents need to also enjoy setting up random Python projects ;)
 
-Assumes that each device has been statically assigned an IP by your DHCP server.
+![Legba Screenshot](./legba.png)
 
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
@@ -12,10 +12,11 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
 * python
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
+* each network device has been statically assigned an IP by your DHCP server.
 
 ## Install
 
-1. create a `legba` user who's home directory is `/home/legba`
+1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
 3. Copy `conf.dist.py` to `conf.py`
 4. Add your devices to `conf.py` in the `trackme` variable.
@@ -29,6 +30,14 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
     sudo systemctl enable legba
     sudo systemctl start legba
     ```
+
+In step 4, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card.
+
+## Troubleshooting
+
+The install steps has you run the service as an unprivileged user `legba`.  Make sure this user exists, owns all the folders and files in `/home/legba` and can write to the `html_file` destination.  For me, I just did a `chown legba /var/www/html`.  
+
+Check the service to see if it has any errors: `sudo systemctl status legba`. You can also watch the `syslog` realtime to further debug: `sudo tail -f /var/log/syslog`
 
 ## Todo
 

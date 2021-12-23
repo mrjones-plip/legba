@@ -138,7 +138,7 @@ def output_stats_html(sqlite, date):
 
 
 def main():
-    sqlite = create_connection(r"./net-tracker.db")
+    sqlite = create_connection(r"./legba.db")
     print('Legba started')
 
     while 1 == 1:
