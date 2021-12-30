@@ -151,25 +151,25 @@ def is_online(ips):
 
 
 def output_stats_html(sqlite, date):
-    usage = {
+    stats = {
         'last_update': datetime.now().strftime("%-I:%M %p"),
-        'date': datetime.now().strftime("%Y-%m-%d")
+        'date': datetime.now().strftime("%Y-%m-%d"),
+        'people': {}
     }
-    usage["people"] = {}
     for row in get_days_activity(sqlite, date):
         person = row[0]
         total_minutes = row[1]
-        usage["people"][person] = {}
-        usage["people"][person]['hourly'] = get_total_by_hour(sqlite, date, person)
-        usage["people"][person]['labels'] = get_first_and_last(sqlite, date, person)
+        stats["people"][person] = {}
+        stats["people"][person]['hourly'] = get_total_by_hour(sqlite, date, person)
+        stats["people"][person]['labels'] = get_first_and_last(sqlite, date, person)
         # one liner FTW! thanks https://stackoverflow.com/a/65422487
-        usage["people"][person]['total'] = "{}h {}m ".format(*divmod(total_minutes, 60))
+        stats["people"][person]['total'] = "{}h {}m ".format(*divmod(total_minutes, 60))
 
     # todo - gracefully handle when these file can't be written to conf.html_file and it's dir
     html_dir = os.path.dirname(os.path.abspath(conf.html_file))
     ajax = html_dir + "/ajax"
     ajax_file = open(ajax, "w")
-    ajax_file.write(json.dumps(usage) )
+    ajax_file.write(json.dumps(stats))
 
     # copy in happy histogram if not there
     hh_css = html_dir + "/HappyDayHistogram.min.css"

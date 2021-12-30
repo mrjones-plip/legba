@@ -66,24 +66,25 @@
               right: -55px;
               top: -30px;
             }
-            .person, #foooooooter {
-                clear: both;
+            .person {
+            }
+            #foooooooter {
+                margin-top: 7vw;
             }
             .person .person_name, .person .histogram {
-                float:left;
             }
             .histogram {
-                padding-left:20px;
                 padding-top:20px;
-                width: 73%;
             }
             .person {
                 height: 13vw;
             }
             .person_name {
-                width: 20%;
-                margin-top: 2vw;
-                text-align: right;
+                margin-top: 7vw;
+                text-align: center;
+                padding-top: 0vw;
+            }
+            .hour {
             }
 
         </style>
@@ -121,11 +122,10 @@
         };
 
         function outputPerson(person, data, count, dom){
-            console.log(JSON.stringify(person));
-            console.log(JSON.stringify(data));
-            console.log(JSON.stringify(count));
+            const backgroundColor = ["Bisque", "Aqua", "BurlyWood", "CornflowerBlue", "DarkKhaki",
+                "DeepSkyBlue", "Khaki", "Lavender", "LightSkyBlue", "MediumAquaMarine"],
             histogramId = 'histogram' + count
-            const personHtml = person + '<br />' + data.total;
+            const personHtml = person + ' - ' + data.total;
             dom.innerHTML +=
                 '<div class="person">' +
                     '<div class="person_name">' + personHtml + '</div>' +
@@ -134,7 +134,7 @@
             let labels = [];
             labels[data.labels.first_label] = data.labels.first
             labels[data.labels.last_label] = data.labels.last
-            HappyDayHistogram(histogramId, data.hourly, 'blue', labels);
+            HappyDayHistogram(histogramId, data.hourly, backgroundColor[count], labels);
             return count;
         }
 
