@@ -99,9 +99,13 @@ def get_first_and_last(sqlite, date, person):
     # todo - maybe cleanse/validate the date var? could lead to more data getting selected than a single date
     cur.execute(sql, [date + "%", person])
     result = cur.fetchone()
+    first_raw = datetime.strptime(result[0], "%H:%M:%S")
+    last_raw = datetime.strptime(result[1], "%H:%M:%S")
     return {
-        'first': datetime.strptime(result[0], "%H:%M:%S").strftime("%-I:%M%p")[:-1],
-        'last': datetime.strptime(result[1], "%H:%M:%S").strftime("%-I:%M%p")[:-1]
+        'first': first_raw.strftime("%-I:%M%p")[:-1],
+        'last': last_raw.strftime("%-I:%M%p")[:-1],
+        'first_label': int(first_raw.strftime("%H")),
+        'last_label': int(last_raw.strftime("%H"))
     }
 
 
@@ -133,10 +137,7 @@ def get_total_by_hour(sqlite, date, person):
         i += 1
 
     for hour in hours:
-        if hour[0] == '00':
-            cur_hour = 0
-        else:
-            cur_hour = int(hour[0].lstrip('0'))
+        cur_hour = int(hour[0])
         hours_cooked[cur_hour] = hour[1]
 
     return hours_cooked
@@ -153,7 +154,7 @@ def output_stats_html(sqlite, date):
     # select name,strftime('%m-%d-%Y %H', date) as thedate,sum(state) as summed from status where state=1 group by name,thedate order by name,thedate;
     # select name, sum(state) as summed from status where state=1 and date like '2021-12-20%' group by name;
     counts_by_day = get_days_activity(sqlite, date)
-    usage = []
+    usage = {}
     for row in counts_by_day:
         person = row[0]
         total_minutes = row[1]
@@ -161,18 +162,17 @@ def output_stats_html(sqlite, date):
         hourly_breakdown = get_total_by_hour(sqlite, date, person)
         # one liner FTW! thanks https://stackoverflow.com/a/65422487
         total_formatted = "{}h {}m ".format(*divmod(total_minutes, 60))
+        usage[person] = {}
         usage[person]['hourly'] = hourly_breakdown
-        usage[person]['first'] = first_last['first']
-        usage[person]['last'] = first_last['last']
+        usage[person]['labels'] = first_last
         usage[person]['total'] = total_formatted
-    usage['last_update'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    usage['last_update'] = datetime.now().strftime("%-I:%M %p")
+    usage['date'] = datetime.now().strftime("%Y-%m-%d")
 
-    table = pandas.DataFrame(tableData, columns=tableHead)
     html_data = open("html/header.html", "r").read()
-    html_data += "\n<script> " + json.dumps(js_data) + "</script>"
-    html_data += "<h2>Activity for " + str(date) + "</h2>"
+    html_data += "\n<script> " + json.dumps(usage) + "</script>"
+    html_data += "<h2>Activity for <span id='date'>" + str(date) + "</h2>"
     html_data += "<p>Last Updated: " + datetime.now().strftime("%-I:%M %p") + "<p>"
-    html_data += table.to_html()
 
     # todo - gracefully handle when these file can't be written to conf.html_file and it's dir
 
