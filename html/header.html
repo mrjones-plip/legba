@@ -77,9 +77,12 @@
                 padding-top:20px;
                 width: 73%;
             }
+            .person {
+                height: 13vw;
+            }
             .person_name {
                 width: 20%;
-                margin-top: 29px;
+                margin-top: 2vw;
                 text-align: right;
             }
 
@@ -122,9 +125,10 @@
             console.log(JSON.stringify(data));
             console.log(JSON.stringify(count));
             histogramId = 'histogram' + count
+            const personHtml = person + '<br />' + data.total;
             dom.innerHTML +=
                 '<div class="person">' +
-                    '<div class="person_name">' + person + '</div>' +
+                    '<div class="person_name">' + personHtml + '</div>' +
                     '<div class="histogram" id="' + histogramId + '"></div>' +
                 '</div>';
             let labels = [];
