@@ -4,7 +4,7 @@ Track how long devices have been online on your LAN for the current day. Ideal f
 
 The tracking results are shown in an HTML page that automatically reloads the data via AJAX every 60 seconds like this:
 
-![Legba Screenshot](html/legba.png)
+![Legba Screenshot](html/legba2.png)
 
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
