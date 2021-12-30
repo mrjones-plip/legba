@@ -151,46 +151,41 @@ def is_online(ips):
 
 
 def output_stats_html(sqlite, date):
-    # select name,strftime('%m-%d-%Y %H', date) as thedate,sum(state) as summed from status where state=1 group by name,thedate order by name,thedate;
-    # select name, sum(state) as summed from status where state=1 and date like '2021-12-20%' group by name;
-    counts_by_day = get_days_activity(sqlite, date)
-    usage = {}
-    for row in counts_by_day:
+    usage = {
+        'last_update': datetime.now().strftime("%-I:%M %p"),
+        'date': datetime.now().strftime("%Y-%m-%d")
+    }
+    usage["people"] = {}
+    for row in get_days_activity(sqlite, date):
         person = row[0]
         total_minutes = row[1]
-        first_last = get_first_and_last(sqlite, date, person)
-        hourly_breakdown = get_total_by_hour(sqlite, date, person)
+        usage["people"][person] = {}
+        usage["people"][person]['hourly'] = get_total_by_hour(sqlite, date, person)
+        usage["people"][person]['labels'] = get_first_and_last(sqlite, date, person)
         # one liner FTW! thanks https://stackoverflow.com/a/65422487
-        total_formatted = "{}h {}m ".format(*divmod(total_minutes, 60))
-        usage[person] = {}
-        usage[person]['hourly'] = hourly_breakdown
-        usage[person]['labels'] = first_last
-        usage[person]['total'] = total_formatted
-    usage['last_update'] = datetime.now().strftime("%-I:%M %p")
-    usage['date'] = datetime.now().strftime("%Y-%m-%d")
-
-    html_data = open("html/header.html", "r").read()
-    html_data += "\n<script> " + json.dumps(usage) + "</script>"
-    html_data += "<h2>Activity for <span id='date'>" + str(date) + "</h2>"
-    html_data += "<p>Last Updated: " + datetime.now().strftime("%-I:%M %p") + "<p>"
+        usage["people"][person]['total'] = "{}h {}m ".format(*divmod(total_minutes, 60))
 
     # todo - gracefully handle when these file can't be written to conf.html_file and it's dir
+    html_dir = os.path.dirname(os.path.abspath(conf.html_file))
+    ajax = html_dir + "/ajax"
+    ajax_file = open(ajax, "w")
+    ajax_file.write(json.dumps(usage) )
 
     # copy in happy histogram if not there
-    html_dir = os.path.dirname(os.path.abspath(conf.html_file))
     hh_css = html_dir + "/HappyDayHistogram.min.css"
-    hh_js = html_dir + "/HappyDayHistogram.min.js"
     if not os.path.exists(hh_css):
         read_file = open("html/HappyDayHistogram.min.css", "r").read()
         open(hh_css, "w").write(read_file)
 
+    hh_js = html_dir + "/HappyDayHistogram.min.js"
     if not os.path.exists(hh_js):
         read_file = open("html/HappyDayHistogram.min.js", "r").read()
         open(hh_js, "w").write(read_file)
 
     file = open(conf.html_file, "w")
+    html_data = open("html/header.html", "r").read()
     html_data += open("html/footer.html", "r").read()
-    return file.write(html_data)
+    file.write(html_data)
 
 
 def main():
