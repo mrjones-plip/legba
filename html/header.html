@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <title>Legba The Net-Tracker</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <style>
+            body {
+                font-size: 2.5vw;
+            }
+
+            /* ==========================================================================
+               Fork Me on Github Stuffs
+               ========================================================================== */
+
+            #forkongithub a {
+              background:#000;
+              color:#ddd;
+              text-decoration:none;
+              font-family:arial,sans-serif;
+              text-align:center;
+              font-weight:bold;
+              padding:5px 40px;
+              transition:0.5s;
+              font-size:.8rem;
+              line-height: 1rem;
+              width:200px;
+              position:absolute;
+              top:60px;
+              right:-40px;
+              transform:rotate(45deg);
+              -webkit-transform:rotate(45deg);
+              -ms-transform:rotate(45deg);
+              -moz-transform:rotate(45deg);
+              -o-transform:rotate(45deg);
+              box-shadow:4px 4px 10px rgba(0,0,0,0.8);
+            }
+            #forkongithub a:hover{background:#c11;
+              color:#fff;
+            }
+            #forkongithub a::before,#forkongithub a::after{
+              content:"";
+              width:100%;
+              display:block;
+              position:absolute;
+              top:1px;
+              left:0;
+              height:1px;
+              background:#fff;
+            }
+            #forkongithub a::after{
+              bottom:1px;
+              top:auto;
+            }
+            .glow {
+              outline: none;
+              border-color: yellow;
+              box-shadow: 0 0 20px yellow;
+            }
+            #forkongithub {
+              position:fixed;
+              display:block;
+              width:200px;
+              overflow:hidden;
+              height:200px;
+              z-index:9999;
+              right: -55px;
+              top: -30px;
+            }
+            .person {
+            }
+            #foooooooter {
+                margin-top: 7vw;
+            }
+            .person .person_name, .person .histogram {
+            }
+            .histogram {
+                padding-top:20px;
+            }
+            .person {
+                height: 13vw;
+            }
+            .person_name {
+                margin-top: 7vw;
+                text-align: center;
+                padding-top: 0vw;
+            }
+            .hour {
+            }
+
+        </style>
+        <script src="./HappyDayHistogram.min.js" ></script>
+        <link rel="stylesheet" href="./HappyDayHistogram.min.css" />
+    </head>
+    <body>
+
+
+    <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
+    <span id="forkongithub" class="hidden-print ">
+        <a href="https://github.com/mrjones-plip/legba">Fork me on GitHub</a>
+    </span>
+    <h1>Legba The Net-Tracker</h1>
+    <h2>Activity for <span id="date">&nbsp;...</span></h2>
+    <p>Last Updated: <span id="time">&nbsp;...</span><p>
+    <div id="people">&nbsp;Wait....</div>
+
+    <script>
+        // thanks https://stackoverflow.com/a/35970894
+        let getJSON = function(url, callback) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'json';
+            xhr.onload = function() {
+                let status = xhr.status;
+                if (status === 200) {
+                    callback(null, xhr.response);
+                } else {
+                    callback(status, xhr.response);
+                }
+            };
+
+            xhr.send();
+        };
+
+        function outputPerson(person, data, count, dom){
+            const backgroundColor = ["Bisque", "Aqua", "BurlyWood", "CornflowerBlue", "DarkKhaki",
+                "DeepSkyBlue", "Khaki", "Lavender", "LightSkyBlue", "MediumAquaMarine"],
+            histogramId = 'histogram' + count
+            const personHtml = person + ' - ' + data.total;
+            dom.innerHTML +=
+                '<div class="person">' +
+                    '<div class="person_name">' + personHtml + '</div>' +
+                    '<div class="histogram" id="' + histogramId + '"></div>' +
+                '</div>';
+            let labels = [];
+            labels[data.labels.first_label] = data.labels.first
+            labels[data.labels.last_label] = data.labels.last
+            HappyDayHistogram(histogramId, data.hourly, backgroundColor[count], labels);
+            return count;
+        }
+
+        function loadData() {
+            getJSON('./ajax',
+                function(err, results) {
+                    if (err !== null) {
+                        console.log('Something went wrong fetching player JSON: ' + err);
+                    } else {
+                        const people = document.getElementById('people');
+                        const date = document.getElementById('date');
+                        const time = document.getElementById('time');
+                        date.innerHTML = results.date;
+                        time.innerHTML = results.last_update;
+                        people.innerHTML = '';
+                        people.classList.remove("sk-pulse");
+                        count = 0;
+                        for(const person in results.people){
+                            const data = results.people[person];
+                            outputPerson(person, data, count, people);
+                            count++;
+                        }
+                    }
+                });
+        }
+        loadData();
+        setInterval(loadData, 60000);
+    </script>

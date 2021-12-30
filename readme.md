@@ -1,12 +1,14 @@
 # Legba The Net-Tracker
 
-Track how long devices have been online on your LAN. Ideal for parents who want to have
-and open dialog with their kids about how long they should be online on a day to day
-basis. These same parents need to also enjoy setting up random Python projects ;)
+Track how long devices have been online on your LAN for the current day. Ideal for parents who want to have and open dialog with their kids about how long they should be online on a day-to-day basis. These same parents need to also enjoy setting up random Python projects ;)
 
-![Legba Screenshot](./legba.png)
+The tracking results are shown in an HTML page that automatically reloads the data via AJAX every 60 seconds like this:
+
+![Legba Screenshot](html/legba.png)
 
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
+
+If you like the histograms, check out either [Happy Day Histogram (HDH)](https://github.com/mrjones-plip/Happy-Day-Histogram), which Legba uses for a day's activity, or [the original Happy Histogram](https://github.com/Packet-Clearing-House/Happy-Histogram/) to show a year's activity!
 
 ## Prerequisites
 
