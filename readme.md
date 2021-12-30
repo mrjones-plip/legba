@@ -4,7 +4,7 @@ Track how long devices have been online on your LAN. Ideal for parents who want 
 and open dialog with their kids about how long they should be online on a day to day
 basis. These same parents need to also enjoy setting up random Python projects ;)
 
-![Legba Screenshot](./legba.png)
+![Legba Screenshot](html/legba.png)
 
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
