@@ -4,4 +4,4 @@ trackme = {
     'Mohamed, ': ["192.168.1.240", "192.168.1.17"]
 }
 
-html_file = "/var/www/html/index.html";
+html_file = "/var/www/localhost/htdocs/index.html";

@@ -1,0 +1,25 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3'
+
+# Define services
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/localhost/htdocs
+    restart: unless-stopped
+
+  lighttpd:
+    image: sebp/lighttpd
+    volumes:
+      - .:/var/www/localhost/htdocs/
+#      - <config-directory>:/etc/lighttpd
+    depends_on:
+      - app
+    ports:
+      - "9880:80"
+    tty: true

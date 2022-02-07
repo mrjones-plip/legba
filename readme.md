@@ -10,13 +10,15 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
 If you like the histograms, check out either [Happy Day Histogram (HDH)](https://github.com/mrjones-plip/Happy-Day-Histogram), which Legba uses for a day's activity, or [the original Happy Histogram](https://github.com/Packet-Clearing-House/Happy-Histogram/) to show a year's activity!
  
-## Prerequisites
+## Prerequisites 
 
 * python
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
 
-## Install
+These are only if you're doing the bare-metal/VM install.  Docker comes with everthing needed.
+
+## Install bare-metal/VM
 
 1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
@@ -35,6 +37,17 @@ If you like the histograms, check out either [Happy Day Histogram (HDH)](https:/
 
 In step 4, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card.
 
+## Install docker-compose
+
+1. Clone this repo, `cd` into it
+2. Copy `conf.dist.py` to `conf.py`
+3. Add your devices to `conf.py` in the `trackme` variable.
+4. Run docker: `docker-compose up` - first time run the image will have to be built
+
+Legba should be available on `http://localhost:9880`
+
+In step 3, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card. Or if a someone uses a Nintendo Switch and also an iPad.
+
 ## Troubleshooting
 
 The install steps has you run the service as an unprivileged user `legba`.  Make sure this user exists, owns all the folders and files in `/home/legba` and can write to the `html_file` destination.  For me, I just did a `chown legba /var/www/html`.  
@@ -46,5 +59,6 @@ Check the service to see if it has any errors: `sudo systemctl status legba`. Yo
 - [x] Add github link to output
 - [x] Make it a bit more responsive on mobile
 - [X] Add first and last time online
-- [ ] Maybe AJAX or autorefresh or both?
+- [X] Maybe AJAX or autorefresh or both?
 - [X] Add better running instructions - daemonize this!
+- [ ] Add `docker-compose` support
