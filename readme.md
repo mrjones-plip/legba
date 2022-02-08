@@ -10,7 +10,7 @@ Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
 If you like the histograms, check out either [Happy Day Histogram (HDH)](https://github.com/mrjones-plip/Happy-Day-Histogram), which Legba uses for a day's activity, or [the original Happy Histogram](https://github.com/Packet-Clearing-House/Happy-Histogram/) to show a year's activity!
  
-## Prerequisites 
+## Prerequisites
 
 * python
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
