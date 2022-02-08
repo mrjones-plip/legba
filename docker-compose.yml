@@ -6,15 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/var/www/localhost/htdocs
+      - ./data:/var/www/localhost/htdocs
     restart: unless-stopped
 
   lighttpd:
     image: sebp/lighttpd
     volumes:
-      - .:/var/www/localhost/htdocs/
+      - ./data:/var/www/localhost/htdocs/
     depends_on:
       - app
     ports:
-      - "9880:80"
+      - "${LEGBA_PORT:-9880}:80"
     tty: true

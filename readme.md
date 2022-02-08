@@ -41,12 +41,15 @@ In step 4, you can assign more than one IP to a person.  For example if they use
 
 1. Clone this repo, `cd` into it
 2. Copy `conf.example.py` to `conf.py`
-3. Add your devices to `conf.py` in the `trackme` variable.
-4. Run docker: `docker-compose up` - first time run the image will have to be built
+3. Create a new directory called `data` in the base of the repo.
+4. Add your devices to `conf.py` in the `trackme` variable.
+5. Run docker: `docker-compose up` - first time run the image will have to be built. 
 
 Legba should be available on `http://localhost:9880`
 
 In step 3, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card. Or if a someone uses a Nintendo Switch and also an iPad.
+
+In step 5, you can assign a different port with the `LEGBA_PORT` environment variable like this: `LEGBA_PORT=9000 docker-compose up`
 
 ## Troubleshooting
 

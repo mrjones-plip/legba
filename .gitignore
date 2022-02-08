@@ -4,7 +4,3 @@ legba.db
 __pycache__
 venv
 /data
-/HappyDayHistogram.min.css
-/HappyDayHistogram.min.js
-/ajax
-/index.html
