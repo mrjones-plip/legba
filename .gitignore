@@ -3,7 +3,7 @@ conf.py
 legba.db
 __pycache__
 venv
-/data/
+/data
 /HappyDayHistogram.min.css
 /HappyDayHistogram.min.js
 /ajax
