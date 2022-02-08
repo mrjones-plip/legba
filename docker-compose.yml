@@ -1,10 +1,6 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-
 version: '3'
 
-# Define services
 services:
-
   app:
     build:
       context: .
@@ -17,7 +13,6 @@ services:
     image: sebp/lighttpd
     volumes:
       - .:/var/www/localhost/htdocs/
-#      - <config-directory>:/etc/lighttpd
     depends_on:
       - app
     ports:
