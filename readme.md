@@ -22,7 +22,7 @@ These are only if you're doing the bare-metal/VM install.  Docker comes with eve
 
 1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
-3. Copy `conf.dist.py` to `conf.py`
+3. Copy `conf.example.py` to `conf.py`
 4. Add your devices to `conf.py` in the `trackme` variable.
 5. Set your output path in `conf.py` in the `html_file` variable. Ensure the `legba` user can write to this file.
 6. Install all the python prerequisites with `pip3 install -r requirements.txt`
@@ -40,7 +40,7 @@ In step 4, you can assign more than one IP to a person.  For example if they use
 ## Install docker-compose
 
 1. Clone this repo, `cd` into it
-2. Copy `conf.dist.py` to `conf.py`
+2. Copy `conf.example.py` to `conf.py`
 3. Add your devices to `conf.py` in the `trackme` variable.
 4. Run docker: `docker-compose up` - first time run the image will have to be built
 
