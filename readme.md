@@ -61,4 +61,4 @@ Check the service to see if it has any errors: `sudo systemctl status legba`. Yo
 - [X] Add first and last time online
 - [X] Maybe AJAX or autorefresh or both?
 - [X] Add better running instructions - daemonize this!
-- [ ] Add `docker-compose` support
+- [X] Add `docker-compose` support
