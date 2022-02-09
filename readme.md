@@ -9,22 +9,26 @@ The tracking results are shown in an HTML page that automatically reloads the da
 Named after [Papa Legba](https://en.wikipedia.org/wiki/Papa_Legba)
 
 If you like the histograms, check out either [Happy Day Histogram (HDH)](https://github.com/mrjones-plip/Happy-Day-Histogram), which Legba uses for a day's activity, or [the original Happy Histogram](https://github.com/Packet-Clearing-House/Happy-Histogram/) to show a year's activity!
- 
-## Prerequisites
+
+## Install 
+
+Legba is happy to run on bare-metal via a `pip3` and you bring your own web server, or there's a `docker-compose` file that will build a small layer on top of the official [Python 3 Alpine](https://hub.docker.com/_/python/) image and [lighttpd](https://hub.docker.com/r/sebp/lighttpd) is used as the web server.
+
+### Bare-metal/VM
+
+#### Prerequisites
 
 * python
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
 
-These are only if you're doing the bare-metal/VM install.  Docker comes with everthing needed.
-
-## Install bare-metal/VM
+#### pip3 an friends
 
 1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
 3. Copy `conf.example.py` to `conf.py`
 4. Add your devices to `conf.py` in the `trackme` variable.
-5. Set your output path in `conf.py` in the `html_file` variable. Ensure the `legba` user can write to this file.
+5. Set your output path in `conf.py` in the `html_file` variable. Ensure the `legba` user can write to this file. The default `html_file`  value assumes you're running `lighttpd` per the Docker setup, but can be set to any path you'd like. Be sure to include the file name too (eg `index.html`).
 6. Install all the python prerequisites with `pip3 install -r requirements.txt`
 7. Copy the systemd file into place, reload systemd, start and enable it:
 
@@ -37,7 +41,7 @@ These are only if you're doing the bare-metal/VM install.  Docker comes with eve
 
 In step 4, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card.
 
-## Install docker-compose
+### docker-compose
 
 1. Clone this repo, `cd` into it
 2. Copy `conf.example.py` to `conf.py`
