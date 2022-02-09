@@ -16,11 +16,13 @@ If you like the histograms, check out either [Happy Day Histogram (HDH)](https:/
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
 
-## Install
+These are only if you're doing the bare-metal/VM install.  Docker comes with everthing needed.
+
+## Install bare-metal/VM
 
 1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
-3. Copy `conf.dist.py` to `conf.py`
+3. Copy `conf.example.py` to `conf.py`
 4. Add your devices to `conf.py` in the `trackme` variable.
 5. Set your output path in `conf.py` in the `html_file` variable. Ensure the `legba` user can write to this file.
 6. Install all the python prerequisites with `pip3 install -r requirements.txt`
@@ -35,6 +37,20 @@ If you like the histograms, check out either [Happy Day Histogram (HDH)](https:/
 
 In step 4, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card.
 
+## Install docker-compose
+
+1. Clone this repo, `cd` into it
+2. Copy `conf.example.py` to `conf.py`
+3. Create a new directory called `data` in the base of the repo.
+4. Add your devices to `conf.py` in the `trackme` variable.
+5. Run docker: `docker-compose up` - first time run the image will have to be built. 
+
+Legba should be available on `http://localhost:9880`
+
+In step 3, you can assign more than one IP to a person.  For example if they use a dock with Ethernet which gets a different IP than their WiFi card. Or if a someone uses a Nintendo Switch and also an iPad.
+
+In step 5, you can assign a different port with the `LEGBA_PORT` environment variable like this: `LEGBA_PORT=9000 docker-compose up`
+
 ## Troubleshooting
 
 The install steps has you run the service as an unprivileged user `legba`.  Make sure this user exists, owns all the folders and files in `/home/legba` and can write to the `html_file` destination.  For me, I just did a `chown legba /var/www/html`.  
@@ -46,5 +62,6 @@ Check the service to see if it has any errors: `sudo systemctl status legba`. Yo
 - [x] Add github link to output
 - [x] Make it a bit more responsive on mobile
 - [X] Add first and last time online
-- [ ] Maybe AJAX or autorefresh or both?
+- [X] Maybe AJAX or autorefresh or both?
 - [X] Add better running instructions - daemonize this!
+- [X] Add `docker-compose` support

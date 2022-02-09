@@ -3,3 +3,4 @@ conf.py
 legba.db
 __pycache__
 venv
+/data
