@@ -22,7 +22,7 @@ Legba is happy to run on bare-metal via a `pip3` and you bring your own web serv
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
 
-#### pip3 an friends
+#### pip3 and friends
 
 1. Create a `legba` user who's home directory is `/home/legba`
 2. Clone this repo, `cd` into it so you're in `/home/legba/legba`
