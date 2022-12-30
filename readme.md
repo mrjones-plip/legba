@@ -1,6 +1,11 @@
 # Legba The Net-Tracker
 
-Track how long devices have been online on your LAN for the current day. Ideal for parents who want to have and open dialog with their kids about how long they should be online on a day-to-day basis. These same parents need to also enjoy setting up random Python projects ;)
+Legba allows you to track how long devices have been online on your LAN for the current day. Ideal for parents who want to have and open dialog with their kids about how long they should be online on a day-to-day basis. These same parents need to also enjoy setting up random Python projects ;)
+
+Features:
+* Aggregate one person's time across multiple devices
+* Display a different histogram for each person 
+* Optionally get alerts for specific people every 15 minutes of time they use
 
 The tracking results are shown in an HTML page that automatically reloads the data via AJAX every 60 seconds like this:
 
