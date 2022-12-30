@@ -171,16 +171,13 @@ def output_stats_html(sqlite, date):
     ajax_file = open(ajax, "w")
     ajax_file.write(json.dumps(stats))
 
-    # copy in happy histogram if not there
-    hh_css = html_dir + "/HappyDayHistogram.min.css"
-    if not os.path.exists(hh_css):
-        read_file = open("html/HappyDayHistogram.min.css", "r").read()
-        open(hh_css, "w").write(read_file)
-
-    hh_js = html_dir + "/HappyDayHistogram.min.js"
-    if not os.path.exists(hh_js):
-        read_file = open("html/HappyDayHistogram.min.js", "r").read()
-        open(hh_js, "w").write(read_file)
+    # copy in happy histogram files if not there
+    copy_files = ['HappyDayHistogram.min.css', 'HappyDayHistogram.min.js', 'VeveLegba.svg']
+    for file in copy_files:
+        temp = html_dir + "/" + file
+        if not os.path.exists(temp):
+            read_file = open("html/" + file, "r").read()
+            open(temp, "w").write(read_file)
 
     file = open(conf.html_file, "w")
     html_data = open("html/header.html", "r").read()
