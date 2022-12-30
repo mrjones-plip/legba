@@ -86,6 +86,13 @@
             }
             .hour {
             }
+            button {
+                 vertical-align: middle;
+                 margin-bottom: .5%;
+                 padding: .3%;
+                 font-size: 1.4vw;
+                 background-color: white;
+             }
 
         </style>
         <script src="./HappyDayHistogram.min.js" ></script>
@@ -104,6 +111,7 @@
     <div id="people">&nbsp;Wait....</div>
 
     <script>
+        const frequency = 15;
         // thanks https://stackoverflow.com/a/35970894
         let getJSON = function(url, callback) {
             let xhr = new XMLHttpRequest();
@@ -123,27 +131,43 @@
 
         function outputPerson(person, data, count, dom){
             const backgroundColor = ["Bisque", "Aqua", "BurlyWood", "CornflowerBlue", "DarkKhaki",
-                "DeepSkyBlue", "Khaki", "Lavender", "LightSkyBlue", "MediumAquaMarine"],
-            histogramId = 'histogram' + count
-            const personHtml = person + ' - ' + data.total;
+                "DeepSkyBlue", "Khaki", "Lavender", "LightSkyBlue", "MediumAquaMarine"];
+            const histogramId = 'histogram' + count;
+            const personHtml = person + ' - ' + data.total +
+                '<button ' +
+                    'id="'+ person + '_button" ' +
+                    'onclick="follow_or_unfollow(\''+ person + '\')">' +
+                '</button>';
             dom.innerHTML +=
                 '<div class="person">' +
                     '<div class="person_name">' + personHtml + '</div>' +
                     '<div class="histogram" id="' + histogramId + '"></div>' +
                 '</div>';
-            let labels = [];
-            labels[data.labels.first_label] = data.labels.first
-            labels[data.labels.last_label] = data.labels.last
+            const labels = [];
+            labels[data.labels.first_label] = data.labels.first;
+            labels[data.labels.last_label] = data.labels.last;
             HappyDayHistogram(histogramId, data.hourly, backgroundColor[count], labels);
-            return count;
+            set_button_text(person);
+            alert_on_time(person, data);
+        }
+
+        function alert_on_time(person, data){
+            const current_ids = get_cookie();
+            const total_minutes = data.hourly.reduce(function (total, current) {
+                return total + current;
+            })
+            if (!current_ids || !person in current_ids || current_ids[person] !== true){
+                return;
+            }
+            if (total_minutes % frequency === 0){
+                notify.show(frequency + " minutes have passed!", person + "is at a total of " + data.total);
+            }
         }
 
         function loadData() {
             getJSON('./ajax',
                 function(err, results) {
-                    if (err !== null) {
-                        console.log('Something went wrong fetching player JSON: ' + err);
-                    } else {
+                    if (err === null) {
                         const people = document.getElementById('people');
                         const date = document.getElementById('date');
                         const time = document.getElementById('time');
@@ -160,6 +184,80 @@
                     }
                 });
         }
+
+        // thanks! https://stackoverflow.com/a/11344672
+        function set_cookie(value) {
+            document.cookie = [
+                'legba_following=', JSON.stringify(value), ';' +
+                'expires=Thu, 18 Dec 2033 12:00:00 UTC;' +
+                'path=/;' +
+                'SameSite=Lax;' +
+                'domain=.', window.location.hostname.toString(), ';' +
+                'path=/;'
+                ].join('');
+        }
+        function get_cookie() {
+            let result = document.cookie.match(new RegExp('legba_following=' + '([^;]+)'));
+            result && (result = JSON.parse(result[1]));
+            return result;
+        }
+        function set_button_text(person){
+            const current_ids = get_cookie();
+            let text;
+            if (current_ids && person in current_ids && current_ids[person] === true){
+                text = 'Unfollow';
+            } else {
+                text = 'Follow';
+            }
+            document.getElementById(person + '_button').textContent = text;
+        }
+        function follow_or_unfollow(person) {
+            let current_ids = get_cookie();
+            if (!current_ids){
+                current_ids = {}
+            }
+            current_ids[person] = current_ids[person] !== true;
+            if(current_ids[person]){
+                notify.show("Alerts Enabled", "Will alert for " + person + " every " + frequency + " minutes.");
+            } else {
+                notify.show("Alerts Disabled", "No longer alerting for "+ person);
+            }
+            set_cookie(current_ids);
+            set_button_text(person);
+        }
+
+        // thanks!! https://www.bennish.net/web-notifications.html
+        window.onload = function() {
+            window.notify = {
+                list: [],
+                id: 0,
+                compatible: function() {
+                    return typeof Notification !== 'undefined';
+                },
+                authorize: function() {
+                    if (notify.compatible()) {
+                        Notification.requestPermission(function(permission) {
+                        });
+                    }
+                },
+                show: function(title, body) {
+                    notify.authorize();
+                    if (typeof Notification === 'undefined') { return; }
+                    if (notify.compatible()) {
+                        notify.id++;
+                        const id = notify.id;
+
+                        notify.list[id] = new Notification("Legba: " + title, {
+                            body: body,
+                            tag: id,
+                            icon: "VeveLegba.svg",
+                            lang: "",
+                            dir: "auto",
+                        });
+                    }
+                },
+            };
+        };
         loadData();
         setInterval(loadData, 60000);
     </script>

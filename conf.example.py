@@ -4,4 +4,5 @@ trackme = {
     'Mohamed, ': ["192.168.1.240", "192.168.1.17"]
 }
 
-html_file = "/var/www/localhost/htdocs/index.html";
+# For Docker based deployments, keep as "/var/www/localhost/htdocs/index.html"
+html_file = "/var/www/localhost/htdocs/index.html"
