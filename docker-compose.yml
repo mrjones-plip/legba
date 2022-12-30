@@ -6,13 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./data:/var/www/localhost/htdocs
+      - "./data:/var/www/localhost/htdocs"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     restart: unless-stopped
 
   lighttpd:
     image: sebp/lighttpd
     volumes:
-      - ./data:/var/www/localhost/htdocs/
+      - "./data:/var/www/localhost/htdocs/"
     depends_on:
       - app
     ports:
