@@ -19,6 +19,8 @@ If you like the histograms, check out either [Happy Day Histogram (HDH)](https:/
 
 Legba is happy to run on bare-metal via a `pip3` and you bring your own web server, or there's a `docker-compose` file that will build a small layer on top of the official [Python 3 Alpine](https://hub.docker.com/_/python/) image and [lighttpd](https://hub.docker.com/r/sebp/lighttpd) is used as the web server.
 
+If you're going to use the alert feature in either bare-metal or Docker, you need to run your instance in a [Secure Context](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) (aka with TLS).
+
 ### Bare-metal/VM
 
 #### Prerequisites
@@ -26,8 +28,6 @@ Legba is happy to run on bare-metal via a `pip3` and you bring your own web serv
 * python
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
-
-If you're going to use the alert feature, you need to run your instance in a [Secure Context](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) (aka with TLS).
 
 #### pip3 and friends
 
