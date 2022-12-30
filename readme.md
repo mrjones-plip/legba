@@ -27,6 +27,8 @@ Legba is happy to run on bare-metal via a `pip3` and you bring your own web serv
 * web accessible directory to view output - defaults to `/var/www/html/index.html`
 * each network device has been statically assigned an IP by your DHCP server.
 
+If you're going to use the alert feature, you need to run your instance in a [Secure Context](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) (aka with TLS).
+
 #### pip3 and friends
 
 1. Create a `legba` user who's home directory is `/home/legba`
