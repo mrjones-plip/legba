@@ -181,7 +181,6 @@ def output_stats_html(sqlite, date):
         # one liner FTW! thanks https://stackoverflow.com/a/65422487
         stats["people"][person]['total'] = "{}h {}m ".format(*divmod(total_minutes, 60))
 
-    # todo - gracefully handle when these file can't be written to conf.html_file and it's dir
     html_dir = os.path.dirname(os.path.abspath(conf.html_file))
     ajax = html_dir + "/ajax"
     ajax_file = open(ajax, "w")
