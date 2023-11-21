@@ -4,6 +4,22 @@ import json
 import subprocess, sqlite3, time, conf, os
 from datetime import datetime
 from sqlite3 import Error
+from pathlib import Path
+
+
+def check_config():
+    html_file = Path(conf.html_file)
+    if not html_file.is_file():
+        print("Error: \"",  conf.html_file, "\" is not a file. See conf.html_file in conf.py.")
+        exit(1)
+    try:
+        html_file = open(conf.html_file, "a")
+    except PermissionError:
+        print("Error: \"",  conf.html_file, "\" is not writable by Legba. Ensure process can write to it.")
+        exit(1)
+    if not html_file.writable():
+        print("Error:",  conf.html_file, "is not writable by Legba.")
+        exit(1)
 
 
 # thanks https://stackoverflow.com/a/10402323
@@ -186,6 +202,7 @@ def output_stats_html(sqlite, date):
 
 
 def main():
+    check_config()
     sqlite = create_connection(r"./legba.db")
     print('Legba started')
 

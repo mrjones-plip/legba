@@ -3,6 +3,8 @@
     <head>
         <title>Legba The Net-Tracker</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <script src="./HappyDayHistogram.min.js" ></script>
+        <link rel="stylesheet" href="./HappyDayHistogram.min.css" />
         <style>
             body {
                 font-size: 2.5vw;
@@ -94,11 +96,43 @@
                  background-color: white;
              }
 
+            /* ==========================================================================
+               Theme Stuffs
+               ========================================================================== */
+            .dark-mode {
+              background-color: black;
+              color: white;
+            }
+            .dark-mode .die {
+              color: lightgray;
+            }
+            .dark-mode .done {
+              background-color: darkmagenta;
+            }
+            .dark-mode #forkongithub a {
+              background:#fff;
+              color:#000;
+              box-shadow:4px 4px 10px rgba(255,255,255,0.8);
+            }
+            .dark-mode #forkongithub a:hover{background:#c11;
+              color:#000;
+            }
+            .dark-mode #forkongithub a::before,#forkongithub a::after{
+              background:#000;
+            }
+            .dark-mode .dayHistogram .yAxis {
+              border-top:1px solid white;
+            }
+            .dark-mode .dayHistogram .hour .name {
+              border-left:1px solid white;
+              border-top:1px solid white;
+            }
+            .dark-mode .dayHistogram .hour .firstHour {
+              border-left:1px solid white;
+            }
         </style>
-        <script src="./HappyDayHistogram.min.js" ></script>
-        <link rel="stylesheet" href="./HappyDayHistogram.min.css" />
-    </head>
-    <body>
+     </head>
+    <body class="dark-mode">
 
 
     <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
@@ -139,7 +173,7 @@
                     '<button ' +
                     'id="'+ person + '_button" ' +
                     'onclick="follow_or_unfollow(\''+ person + '\')"> ' +
-                    '</button>foo';
+                    '</button>';
             }
             dom.innerHTML +=
                 '<div class="person">' +
@@ -262,6 +296,18 @@
                 },
             };
         };
+        /**
+         * Flip the theme back and forth between light and dark
+         */
+        function toggleTheme() {
+          const element = document.body;
+          element.classList.toggle("dark-mode");
+          console.log("toggled!");
+        }
+        // thanks https://stackoverflow.com/a/59621903 !
+        if (!window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          toggleTheme();
+        }
         loadData();
         setInterval(loadData, 60000);
     </script>
