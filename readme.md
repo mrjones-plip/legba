@@ -6,6 +6,7 @@ Features:
 * Aggregate one person's time across multiple devices
 * Display a different histogram for each person 
 * Optionally get alerts for specific people every 15 minutes of time they use
+* Supports light mode or dark mode for UI
 
 The tracking results are shown in an HTML page that automatically reloads the data via AJAX every 60 seconds like this:
 
